@@ -34,6 +34,25 @@ describe('cartoon network', () => {
             });
     });
 
+    it('updates a cartoon', () => {
+        return request(app).post('/cartoons')
+            .send({ name: 'Timmy Turner', text: 'Fairy Owner' })
+            .then(createRes => {
+                const { id } = JSON.parse(createRes.text);
+                return request(app).get(`/cartoons/${id}`);
+
+            })
+            .then(res => {
+                const { id } = JSON.parse(res.text);
+                return request(app).put(`/cartoons/${id}`)
+                    .send({ text: 'Fairy Lover' })
+                    .then(res => {
+                        const expected = JSON.parse(res.text);
+                        expect(expected).toEqual({ id, name: 'Timmy Turner', text: 'Fairy Lover' });
+                    });
+            });
+    });
+
     it('returns 404 when there is no method', () => {
         return request(app)
             .patch('/cartoons')
