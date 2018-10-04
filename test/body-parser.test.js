@@ -1,5 +1,3 @@
-const request = require('supertest');
-
 const bodyParser = require('../lib/body-parser');
 const http = require('http');
 
