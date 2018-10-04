@@ -1,5 +1,3 @@
-const request = require('supertest');
-
 const bodyParser = require('../lib/body-parser');
 const http = require('http');
 
@@ -17,7 +15,7 @@ describe('body parser', () => {
         request.setHeader('Content-Type', 'text/html');
 
         const promise = bodyParser(request).catch(err => {
-            expect(err).toEqual('Only supports JSON');
+            expect(err).toEqual('Nu ugh NOT TODAY..Only JSON allowed');
         });
 
         request.emit('data', '<html></html>');
