@@ -3,10 +3,10 @@
 const app = require('./lib/app');
 const http = require('http');
 
-// curl 'http://localhost:7890/hi' -d '{ "name": "ryan" }'
+// curl 'http://localhost:2233/hi' -d '{ "name": "david" }'
 const server = http.createServer(app);
 
-const PORT = 7890;
+const PORT = 2233;
 
 server.listen(PORT, () => {
     console.log('server running on', server.address().port);
