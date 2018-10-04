@@ -7,12 +7,19 @@ describe('to do', () => {
         return request(app).post('/toDoList')
             .send({ item: 'finish lab', due: '10/4' })
             .then(res => {
-                console.log('res.text', res.text);
                 const json = JSON.parse(res.text);
-                console.log('json', json);
                 expect(json.item).toEqual('finish lab');
                 expect(json.due).toEqual('10/4');
                 expect(json.id).toEqual(expect.any(String));
             });
+    });
+
+    it('gets all of the to dos', () => {
+        return request(app).get('/toDoList')
+            .send({ item: 'finish lab', due: '10/4' })
+            .send({ item: 'mongo db reading', due: '10/4' })
+            .then(res => {
+                expect(res.text).toEqual([{ item: 'finish lab', due: '10/4' }, { item: 'mongo db reading', due: '10/4' }])
+            })
     });
 });
