@@ -61,7 +61,8 @@ It should return 404 plus any custom page you want to show.
 THE STRATEGY/TEMPLATE PATTERN
 1. Hello World sanity test.
 2. Save something (and test that it got added/saved...does it have an id)
-3. 'POST' a. Move Save to a beforeEach
+3. 'POST' 
+    a. Move Save to a beforeEach
     b. Store returned object
     c. Check Save it to just test id
 4. 'GET' test - retrieve by id and check that it matches saved
