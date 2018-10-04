@@ -23,4 +23,17 @@ describe('body parser', () => {
 
         return promise;
     });
+
+    it('parses a json request', () => {
+        request.setHeader('Content-Type', 'application/json');
+
+        const promise = bodyParser(request).then(body => {
+            expect(body).toEqual({ name: 'Capybara'});
+        });
+
+        request.emit('data', '{ "name": "Capybara" }');
+        request.emit('end');
+
+        return promise;
+    });
 });
