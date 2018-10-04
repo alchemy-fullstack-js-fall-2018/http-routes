@@ -9,34 +9,34 @@ const createCreature = (creature) => {
 
 let savedCreatures = [];
 
-beforeEach(() => {
-    Menagerie.drop();
-});
-
-beforeEach(() => {
-    const creatureObjects = [
-        { 'type':'unicorn', 'isMagical': true },
-        { 'type':'hippogriff', 'isMagical': true },
-        { 'type':'sphynx', 'isMagical': true }
-    ];
-
-    const creaturePromises = creatureObjects.map(createCreature);
-
-    return Promise.all(creaturePromises).then(resultsOfAllCreaturePosts => {
-        savedCreatures = resultsOfAllCreaturePosts
-            .map(creatureResponse => JSON.parse(creatureResponse.text));
-    });
-});
-
 describe('CRUD functions', () => {
 
-    // it('gets a record by id', () => {
-    //     return request(app).get(`/creatures/:${savedCreatures[0].id}`)
-    //         .then(result => {
-    //             const creature = JSON.parse(result.text);
-    //             expect(creature).toEqual(savedCreatures[0]);
-    //         });
-    // });
+    beforeEach(() => {
+        Menagerie.drop();
+    });
+    
+    beforeEach(() => {
+        const creatureObjects = [
+            { 'type':'unicorn', 'isMagical': true },
+            { 'type':'hippogriff', 'isMagical': true },
+            { 'type':'sphynx', 'isMagical': true }
+        ];
+    
+        const creaturePromises = creatureObjects.map(createCreature);
+    
+        return Promise.all(creaturePromises).then(resultsOfAllCreaturePosts => {
+            savedCreatures = resultsOfAllCreaturePosts
+                .map(creatureResponse => JSON.parse(creatureResponse.text));
+        });
+    });
+
+    it('gets a record by id', () => {
+        return request(app).get(`/creatures/${savedCreatures[0].id}`)
+            .then(result => {
+                const creature = JSON.parse(result.text);
+                expect(creature).toEqual(savedCreatures[0]);
+            });
+    });
 
     it('gets all records', () => {
         return request(app).get('/creatures')
