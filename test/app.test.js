@@ -64,7 +64,6 @@ describe('job board', () => {
                     });
             })
             .then(res => {
-                console.log(res);
                 const json = JSON.parse(res.text);
                 expect(json.title).toEqual('Janitor');
                 expect(json.desc).toEqual('There is nothing really special about it');
