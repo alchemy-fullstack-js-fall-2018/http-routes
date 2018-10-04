@@ -70,9 +70,36 @@ describe('job board', () => {
                 expect(json.salary).toEqual(1);
                 expect(json.id).toEqual(expect.any(String));
             });
-
-
     });
+
+
+    it('deletes a job posting', () => {
+
+        let postId;
+
+        return request(app).post('/jobs')
+            .send({
+                title: 'Head of Research',
+                desc: 'Top secret stuff',
+                salary: 10
+            })
+            .then(createRes => {
+                postId = JSON.parse(createRes.text);
+                return request(app).delete(`/jobs/${postId}`);
+            })
+            .then(() => {
+                return request(app).get(`/jobs/${postId}`);
+            })
+            .then(getRes => {
+                const job = JSON.parse(getRes.text);
+                expect(job.id).toEqual(expect.any(String));
+                expect(job.title).toEqual(expect.any(String));
+                expect(job.desc).toEqual(expect.any(String));
+                expect(job.salary).toEqual(expect.any(Number));
+            });
+    });
+
+
 
     it('returns 404 when there is no method', () => {
         return request(app)
