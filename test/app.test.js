@@ -21,7 +21,7 @@ describe('cartoon network', () => {
 
     it('get a cartoon by id', () => {
         return request(app).post('/cartoons')
-            .send({ username: 'Timmy Turner', text: 'Fairy Owner' })
+            .send({ name: 'Timmy Turner', text: 'Fairy Owner' })
             .then(createRes => {
                 const { id } = JSON.parse(createRes.text);
                 return request(app).get(`/cartoons/${id}`);
