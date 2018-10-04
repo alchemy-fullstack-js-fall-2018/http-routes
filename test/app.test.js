@@ -53,6 +53,24 @@ describe('cartoon network', () => {
             });
     });
 
+    it('deletes a cartoon', () => {
+        return request(app).post('/cartoons')
+            .send({ name: 'Timmy Turner', text: 'Fairy Owner' })
+            .then(createRes => {
+                const { id } = JSON.parse(createRes.text);
+                return request(app).get(`/cartoons/${id}`);
+
+            })
+            .then(res => {
+                const { id } = JSON.parse(res.text);
+                return request(app).delete(`/cartoons/${id}`);
+            })
+            .then(res => {
+                expect(JSON.parse(res.text)).toEqual({ removed: true });
+            });
+
+    });
+
     it('returns 404 when there is no method', () => {
         return request(app)
             .patch('/cartoons')
