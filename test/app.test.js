@@ -3,6 +3,12 @@ const app = require('../lib/app');
 
 describe('Mocking a CRUD Blog Post API', () => {
 
+    it('gets all posts, should return empty', () => {
+        return request(app).get('/posts').then(res => {
+            expect(res.text).toEqual('[]');
+        });
+    });
+    
     it('creates a post', () => {
         return request(app).post('/posts')
             .send({ username: 'Ryan', text: 'Blog City' })
@@ -13,6 +19,22 @@ describe('Mocking a CRUD Blog Post API', () => {
                 expect(json.id).toEqual(expect.any(String));
             });
     });
+    
+    it('get a post by id', () => {
+        return request(app).post('/posts')
+            .send({ username: 'Sally', text: 'posting up a storm' })
+            .then(createRes => {
+                const { id } = JSON.parse(createRes.text);
+                return request(app).get(`/posts/${id}`);
+            })
+            .then(getRes => {
+                const post = JSON.parse(getRes.text);
+                expect(post.id).toEqual(expect.any(String));
+                expect(post.username).toEqual(expect.any(String));
+                expect(post.text).toEqual(expect.any(String));
+            });
+    });
+
 
     it('returns 404 when there is no method', () => {
         return request(app)
