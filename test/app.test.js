@@ -45,12 +45,28 @@ describe('Mocking a CRUD Blog Post API', () => {
             .then(toUpdate => {
                 const { id } = JSON.parse(toUpdate.text);
                 return request(app).put(`/posts/${id}`)
-                    .send({ text: 'updated his post' })
-                    .then(updated => {
-                        const post = JSON.parse(updated.text);
-                        expect(post.username).toEqual('Bob');
-                        expect(post.text).toEqual('updated his post');
-                    });
+                    .send({ text: 'updated his post' });
+            })
+            .then(updated => {
+                const post = JSON.parse(updated.text);
+                expect(post.username).toEqual('Bob');
+                expect(post.text).toEqual('updated his post');
+            });
+    });
+
+    it('deletes a post by id', () => {
+        return request(app).post('/posts')
+            .send({ username: 'Joe', text: 'needs to delete his post' })
+            .then(createRes => {
+                const { id } = JSON.parse(createRes.text);
+                return request(app).get(`/posts/${id}`);
+            })
+            .then(toDelete => {
+                const { id } = JSON.parse(toDelete.text);
+                return request(app).del(`/posts/${id}`);
+            })
+            .then(deleted => {
+                expect(deleted.body).toEqual({ deleted: true });
             });
     });
 
