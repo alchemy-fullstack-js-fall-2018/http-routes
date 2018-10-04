@@ -11,7 +11,7 @@ describe('virtual zoo', () => {
                 return request(app).get(`/animals/${id}`);
             })
             .then(getRes => {
-                const animal = JSON.parse(getRes.text)
+                const animal = JSON.parse(getRes.text);
                 expect(animal.species).toEqual('Penguin');
                 expect(animal.name).toEqual('Ramone');
                 expect(animal.id).toEqual(expect.any(String));
