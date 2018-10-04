@@ -11,7 +11,6 @@ describe('job board', () => {
 
     it('creates a job posting', () => {
 
-
         return request(app).post('/jobs')
             .send({ 
                 title: 'Head of Research',
