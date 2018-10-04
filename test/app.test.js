@@ -90,9 +90,8 @@ describe('job board', () => {
             .then(() => {
                 return request(app).get(`/jobs/${postId}`);
             })
-            .then(getRes => {
-                const job = JSON.parse(getRes.text);
-                expect(job).toEqual('This job posting has expired');
+            .then(res => {
+                expect(res.statusCode).toEqual(404);
             });
     });
 
