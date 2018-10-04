@@ -1,7 +1,12 @@
 const request = require('supertest');
 const app = require('../lib/app');
+const Zoo = require('../lib/models/Zoo');
 
 describe('virtual zoo', () => {
+
+    beforeEach(() => {
+        Zoo.drop();
+    });
 
     it('gets an animal by id', () => {
         return request(app).post('/animals')
@@ -18,8 +23,23 @@ describe('virtual zoo', () => {
             });
     });
 
-    it('creates an animal', () => {
+    it('gets all animals', () => {
+        return request(app).post('/animals')
+            .send({ name: 'Ramone', species: 'Penguin' })
+            .then(() => {
+                return request(app).post('/animals')
+                    .send({ name: 'Larry', species: 'Tiger' });
+            })
+            .then(() => {
+                return request(app).get('/animals');
+            })
+            .then(res => {
+                const arr = JSON.parse(res.text);
+                expect(arr.length).toEqual(2);
+            });
+    });
 
+    it('creates an animal', () => {
         return request(app).post('/animals')
             .send({ name: 'Ramone', species: 'Penguin' })
             .then(res => {
@@ -46,4 +66,40 @@ describe('virtual zoo', () => {
                 expect(res.statusCode).toEqual(404);
             });
     });
+
+    it('changes a an animal', () => {
+        return request(app).post('/animals')
+            .send({ name: 'Ramone', species: 'Penguin' })
+            .then(res => {
+                const { id } = JSON.parse(res.text);
+                return request(app).get(`/animals/${id}`);
+            })
+            .then(res => {
+                const { id } = JSON.parse(res.text);
+                return request(app).put(`/animals/${id}`)
+                    .send({ id: id, name: 'Ralph' })
+                    .then(res => {
+                        const json = JSON.parse(res.text);
+                        expect(json.name).toEqual('Ralph');
+                        expect(json.species).toEqual('Penguin');
+                    });
+            });
+    });
+
+    it('deletes an animal', () => {
+        return request(app).post('/animals')
+            .send({ name: 'Ramone', species: 'Penguin' })
+            .then(res => {
+                const { id } = JSON.parse(res.text);
+                return request(app).get(`/animals/${id}`);
+            })
+            .then(res => {
+                const { id } = JSON.parse(res.text);
+                return request(app).delete(`/animals/${id}`);
+            })
+            .then(res => {
+                const { removed } = JSON.parse(res.text);
+                expect(removed).toEqual(true);
+            });
+    });    
 });
