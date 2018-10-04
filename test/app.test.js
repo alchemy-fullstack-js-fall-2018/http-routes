@@ -6,10 +6,17 @@ describe('ocean dwelling mammals', () => {
         return request(app).post('/odms')
             .send({ type: 'whale', size: 'large' })
             .then(res => {
-                const json = JSON.parse(res.size);
+                console.log('res', res.text);
+                const json = JSON.parse(res.text);
                 expect(json.size).toEqual('large');
                 expect(json.type).toEqual('whale');
                 expect(json.id).toEqual(expect.any(String));
             });
     });
+
+    // it('gets all odms', () => {
+    //     return request(app).get('/odms').then(res => {
+    //         expect(res.text).toEqual('[]');
+    //     });
+    // });
 });
