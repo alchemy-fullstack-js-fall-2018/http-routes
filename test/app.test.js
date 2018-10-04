@@ -55,5 +55,10 @@ describe('job board', () => {
             });
     });
 
+    it('returns 404 when there is no route', () => {
+        return request(app).get('/money').then(res => {
+            expect(res.statusCode).toEqual(404);
+        });
+    });
 
 });
