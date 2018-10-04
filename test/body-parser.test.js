@@ -36,7 +36,6 @@ describe('body parser', () => {
         request.emit('end');
 
         return promise;
-
     });
 
 
