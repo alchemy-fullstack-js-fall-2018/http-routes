@@ -1,0 +1,35 @@
+{
+  "name": "hello-http",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "jest": "jest",
+    "test:run": "jest",
+    "test": "npm run test:run",
+    "test:watch": "npm run jest -- --watch",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MackenzieBerliner-Glasser/bitmap-transformer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MackenzieBerliner-Glasser/bitmap-transformer/issues"
+  },
+  "homepage": "https://github.com/MackenzieBerliner-Glasser/bitmap-transformer#readme",
+  "dependencies": {
+    "eslint": "^5.6.0",
+    "jest": "^23.6.0",
+    "supertest": "^3.3.0",
+    "uuid": "^3.3.2"
+  }
+}
