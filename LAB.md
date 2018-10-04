@@ -53,3 +53,24 @@ It should return 404 plus any custom page you want to show.
 * App: `2pts`
 * Tests: `2pts`
 * Clean Project Organization: `1pt`
+
+
+//we are learning to create layered architecture
+//Layered architecture allows for scalability.
+
+THE STRATEGY/TEMPLATE PATTERN
+1. Hello World sanity test.
+2. Save something (and test that it got added/saved...does it have an id)
+3. 'POST' a. Move Save to a beforeEach
+    b. Store returned object
+    c. Check Save it to just test id
+4. 'GET' test - retrieve by id and check that it matches saved
+5. 'PUT' test - change a prop of saved and confirm that it matches saved.
+6. 'DELETE' 
+    a. Test Delete works
+    b. GET delete to see if 404 works. 
+7. 404 on id, resource, method
+8. GET List
+    a. Save a bunch of stuff
+    b. GET then deepEqual
+
