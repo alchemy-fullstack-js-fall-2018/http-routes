@@ -30,11 +30,29 @@ describe('Mocking a CRUD Blog Post API', () => {
             .then(getRes => {
                 const post = JSON.parse(getRes.text);
                 expect(post.id).toEqual(expect.any(String));
-                expect(post.username).toEqual(expect.any(String));
-                expect(post.text).toEqual(expect.any(String));
+                expect(post.username).toEqual('Sally');
+                expect(post.text).toEqual('posting up a storm');
             });
     });
 
+    it('updates a blog post by id', () => {
+        return request(app).post('/posts')
+            .send({ username: 'Bob', text: 'needs to update his post' })
+            .then(createRes => {
+                const { id } = JSON.parse(createRes.text);
+                return request(app).get(`/posts/${id}`);
+            })
+            .then(toUpdate => {
+                const { id } = JSON.parse(toUpdate.text);
+                return request(app).put(`/posts/${id}`)
+                    .send({ text: 'updated his post' })
+                    .then(updated => {
+                        const post = JSON.parse(updated.text);
+                        expect(post.username).toEqual('Bob');
+                        expect(post.text).toEqual('updated his post');
+                    });
+            });
+    });
 
     it('returns 404 when there is no method', () => {
         return request(app)
