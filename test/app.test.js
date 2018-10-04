@@ -14,7 +14,16 @@ describe('virtual zoo', () => {
             });
     });
 
-    it('returns 404 when there is no route', () => {
+    it('returns 404 when there is no method', () => {
+        return request(app)
+            .patch('/animals')
+            .send({})
+            .then(res => {
+                expect(res.statusCode).toEqual(404);
+            });
+    });
+
+    it('returns 404 when there is a bad route', () => {
         return request(app).post('/aminals')
             .send({ name: 'Ramone', species: 'Penguin' })
             .then(res => {
