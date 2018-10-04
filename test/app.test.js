@@ -26,5 +26,25 @@ describe('job board', () => {
             });
     });
 
+    it('gets a job by id', () => {
+        return request(app).post('/jobs')
+            .send({
+                title: 'Head of Research',
+                desc: 'Top secret stuff',
+                salary: 10
+            })
+            .then(createRes => {
+                const { id } = JSON.parse(createRes.text);
+                return request(app).get(`/jobs/${id}`);
+            })
+            .then(getRes => {
+                const job = JSON.parse(getRes.text);
+                expect(job.id).toEqual(expect.any(String));
+                expect(job.title).toEqual(expect.any(String));
+                expect(job.desc).toEqual(expect.any(String));
+                expect(job.salary).toEqual(expect.any(Number));
+            });
+    });
+
 
 });
