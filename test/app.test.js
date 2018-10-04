@@ -73,7 +73,7 @@ describe('job board', () => {
     });
 
 
-    it.only('deletes a job posting', () => {
+    it('deletes a job posting', () => {
 
         let postId;
 
