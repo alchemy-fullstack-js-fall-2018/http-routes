@@ -67,7 +67,7 @@ describe('virtual zoo', () => {
             });
     });
 
-    it('changes a an animal', () => {
+    it('changes an animal', () => {
         return request(app).post('/animals')
             .send({ name: 'Ramone', species: 'Penguin' })
             .then(res => {
