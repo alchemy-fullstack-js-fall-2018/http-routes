@@ -26,7 +26,7 @@ describe('body parser', () => {
         request.setHeader('Content-Type', 'application/json');
 
         const promise = bodyParser(request).then(body => {
-            expect(body).toEqual({ name: 'Capybara'});
+            expect(body).toEqual({ name: 'Capybara' });
         });
 
         request.emit('data', '{ "name": "Capybara" }');
