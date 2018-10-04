@@ -12,14 +12,31 @@ describe('body parser', () => {
     it('errors if content-type is not json', () => {
         request.setHeader('Content-Type', 'text/html');
 
-        const promise = bodyParser(request).catch(err => {
-            expect(err).toEqual('Only supports JSON');
-        });
+        const promise = bodyParser(request)
+            .catch(err => {
+                expect(err).toEqual('Only supports JSON');
+            });
 
         request.emit('data', '<html></html>');
         request.emit('end');
 
         return promise;
+    });
+
+    it('parses a json request', () => {
+
+        request.setHeader('Content-Type', 'application/json');
+
+        const promise = bodyParser(request)
+            .then(body => {
+                expect(body).toEqual({ job: 'window washer' });
+            });
+
+        request.emit('data', '{ "job": "window washer" }');
+        request.emit('end');
+
+        return promise;
+
     });
 
 
