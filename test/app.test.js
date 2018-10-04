@@ -19,7 +19,13 @@ describe('to do', () => {
             .send({ item: 'finish lab', due: '10/4' })
             .send({ item: 'mongo db reading', due: '10/4' })
             .then(res => {
-                expect(res.text).toEqual([{ item: 'finish lab', due: '10/4' }, { item: 'mongo db reading', due: '10/4' }])
+                expect(res.text).toEqual([{ item: 'finish lab', due: '10/4' }, { item: 'mongo db reading', due: '10/4' }]);
             })
+    });
+
+    it('drop deletes all items in ToDoList', () => {
+        return request(app).drop('/toDoList', (res) => {
+            expect(res.text).toEqual([]);
+        });
     });
 });
