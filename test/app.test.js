@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../lib/app');
-const { Zoo } = require('../lib/models/Zoo');
+const { Zoo } = require('../lib/models/zoo');
 
 describe('virtual zoo', () => {
 
