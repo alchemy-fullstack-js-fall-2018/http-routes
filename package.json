@@ -1,0 +1,22 @@
+{
+  "name": "http-routes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sophiegraham/http-routes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sophiegraham/http-routes/issues"
+  },
+  "homepage": "https://github.com/sophiegraham/http-routes#readme",
+  "dependencies": {
+    "jest": "^23.6.0"
+  }
+}
