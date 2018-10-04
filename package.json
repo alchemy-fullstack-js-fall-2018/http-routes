@@ -21,6 +21,7 @@
   "homepage": "https://github.com/RyLuras/http-routes#readme",
   "devDependencies": {
     "eslint": "^5.6.1",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "supertest": "^3.3.0"
   }
 }
