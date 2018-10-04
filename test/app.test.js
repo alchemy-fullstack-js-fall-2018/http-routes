@@ -13,4 +13,12 @@ describe('virtual zoo', () => {
                 expect(json.id).toEqual(expect.any(String));
             });
     });
+
+    it('returns 404 when there is no route', () => {
+        return request(app).post('/aminals')
+            .send({ name: 'Ramone', species: 'Penguin' })
+            .then(res => {
+                expect(res.statusCode).toEqual(404);
+            });
+    });
 });
