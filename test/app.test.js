@@ -46,5 +46,14 @@ describe('job board', () => {
             });
     });
 
+    it('returns 404 when there is no method', () => {
+        return request(app)
+            .patch('/jobs')
+            .send({})
+            .then(res => {
+                expect(res.statusCode).toEqual(404);
+            });
+    });
+
 
 });
