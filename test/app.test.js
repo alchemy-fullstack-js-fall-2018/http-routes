@@ -9,23 +9,6 @@ describe('job board', () => {
         });
     });
 
-    it('creates a job posting', () => {
-
-        return request(app).post('/jobs')
-            .send({ 
-                title: 'Head of Research',
-                desc: 'Top secret stuff',
-                salary: 10
-            })
-            .then(res => {
-                const json = JSON.parse(res.text);
-                expect(json.title).toEqual('Head of Research');
-                expect(json.desc).toEqual('Top secret stuff');
-                expect(json.salary).toEqual(10);
-                expect(json.id).toEqual(expect.any(String));
-            });
-    });
-
     it('gets a job by id', () => {
         return request(app).post('/jobs')
             .send({
@@ -44,6 +27,52 @@ describe('job board', () => {
                 expect(job.desc).toEqual(expect.any(String));
                 expect(job.salary).toEqual(expect.any(Number));
             });
+    });
+
+    it('creates a job posting', () => {
+
+        return request(app).post('/jobs')
+            .send({ 
+                title: 'Head of Research',
+                desc: 'Top secret stuff',
+                salary: 10
+            })
+            .then(res => {
+                const json = JSON.parse(res.text);
+                expect(json.title).toEqual('Head of Research');
+                expect(json.desc).toEqual('Top secret stuff');
+                expect(json.salary).toEqual(10);
+                expect(json.id).toEqual(expect.any(String));
+            });
+    });
+
+    it('updates a job posting', () => {
+
+        return request(app).post('/jobs')
+            .send({
+                title: 'Head of Research',
+                desc: 'Top secret stuff',
+                salary: 10
+            })
+            .then(createRes => {
+                const { id } = JSON.parse(createRes.text);
+                return request(app).put(`/jobs/${id}`)
+                    .send({
+                        title: 'Janitor',
+                        desc: 'There is nothing really special about it',
+                        salary: 1
+                    });
+            })
+            .then(res => {
+                console.log(res);
+                const json = JSON.parse(res.text);
+                expect(json.title).toEqual('Janitor');
+                expect(json.desc).toEqual('There is nothing really special about it');
+                expect(json.salary).toEqual(1);
+                expect(json.id).toEqual(expect.any(String));
+            });
+
+
     });
 
     it('returns 404 when there is no method', () => {
