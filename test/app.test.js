@@ -73,7 +73,7 @@ describe('job board', () => {
     });
 
 
-    it('deletes a job posting', () => {
+    it.only('deletes a job posting', () => {
 
         let postId;
 
@@ -84,7 +84,7 @@ describe('job board', () => {
                 salary: 10
             })
             .then(createRes => {
-                postId = JSON.parse(createRes.text);
+                postId = JSON.parse(createRes.text).id;
                 return request(app).delete(`/jobs/${postId}`);
             })
             .then(() => {
@@ -92,10 +92,7 @@ describe('job board', () => {
             })
             .then(getRes => {
                 const job = JSON.parse(getRes.text);
-                expect(job.id).toEqual(expect.any(String));
-                expect(job.title).toEqual(expect.any(String));
-                expect(job.desc).toEqual(expect.any(String));
-                expect(job.salary).toEqual(expect.any(Number));
+                expect(job).toEqual('This job posting has expired');
             });
     });
 
