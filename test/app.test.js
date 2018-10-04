@@ -2,9 +2,18 @@ const request = require('supertest');
 const app = require('../lib/app');
 
 describe('cartoon network', () => {
+    let cartoon;
+    beforeEach(() => {
+        return request(app).post('/cartoons')
+            .send({ name: 'Timmy Turner', text: 'Fairy Owner' })
+            .then(res => {
+                cartoon = JSON.parse(res.text);
+            });
+    });
+    
     it('gets all cartoons', () => {
         return request(app).get('/cartoons').then(res => {
-            expect(res.text).toEqual('[]');
+            expect(res.text).toEqual(JSON.stringify([cartoon]));
         });
     });
 
@@ -20,12 +29,7 @@ describe('cartoon network', () => {
     });
 
     it('get a cartoon by id', () => {
-        return request(app).post('/cartoons')
-            .send({ name: 'Timmy Turner', text: 'Fairy Owner' })
-            .then(createRes => {
-                const { id } = JSON.parse(createRes.text);
-                return request(app).get(`/cartoons/${id}`);
-            })
+        return request(app).get(`/cartoons/${cartoon.id}`)
             .then(getRes => {
                 const cartoon = JSON.parse(getRes.text);
                 expect(cartoon.id).toEqual(expect.any(String));
@@ -35,32 +39,17 @@ describe('cartoon network', () => {
     });
 
     it('updates a cartoon', () => {
-        return request(app).post('/cartoons')
-            .send({ name: 'Timmy Turner', text: 'Fairy Owner' })
-            .then(createRes => {
-                const { id } = JSON.parse(createRes.text);
-                return request(app).get(`/cartoons/${id}`);
-
-            })
+        return request(app).put(`/cartoons/${cartoon.id}`)
+            .send({ text: 'Fairy Lover' })
             .then(res => {
-                const { id } = JSON.parse(res.text);
-                return request(app).put(`/cartoons/${id}`)
-                    .send({ text: 'Fairy Lover' })
-                    .then(res => {
-                        const expected = JSON.parse(res.text);
-                        expect(expected).toEqual({ id, name: 'Timmy Turner', text: 'Fairy Lover' });
-                    });
+                const expected = JSON.parse(res.text);
+                expect(expected).toEqual({ id: cartoon.id, name: 'Timmy Turner', text: 'Fairy Lover' });
             });
     });
 
     it('deletes a cartoon', () => {
         return request(app).post('/cartoons')
             .send({ name: 'Timmy Turner', text: 'Fairy Owner' })
-            .then(createRes => {
-                const { id } = JSON.parse(createRes.text);
-                return request(app).get(`/cartoons/${id}`);
-
-            })
             .then(res => {
                 const { id } = JSON.parse(res.text);
                 return request(app).delete(`/cartoons/${id}`);
