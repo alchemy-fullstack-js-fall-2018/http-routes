@@ -1,7 +1,20 @@
 const request = require('supertest');
 const app = require('../lib/app');
 
+
+
 describe('pets that live on a farm', () => {
+
+    it('create a pet', () => {
+        return request(app).post('/petsRoute')
+            .send({ name: 'porky', petType: 'little piglet' })
+            .then(res => {
+                const json = JSON.parse(res.text);
+                expect(json.id).toEqual(expect.any(String));
+                expect(json.name).toEqual('porky');
+                expect(json.petType).toEqual('little piglet');
+            });
+    });
 
     it('gets a pet by id', () => {
         return request(app).post('/petsRoute')
@@ -13,8 +26,8 @@ describe('pets that live on a farm', () => {
             .then(getResponse => {
                 const pet = JSON.parse(getResponse.text);
                 expect(pet.id).toEqual(expect.any(String));
-                expect(pet.name).toEqual(expect.any('porky'));
-                expect(pet.petType).toEqual(expect.any('little piglet'));
+                expect(pet.name).toEqual('porky');
+                expect(pet.petType).toEqual('little piglet');
             });
     });
 
@@ -44,15 +57,7 @@ describe('pets that live on a farm', () => {
                 const array = JSON.parse(res.text);
                 expect(array.length).toEqual(4);
             });
-          
     });
-
-    
-
-
-
-
-
 
     it('returns 404 when there is no method', () => {
         return request(app)
@@ -68,4 +73,11 @@ describe('pets that live on a farm', () => {
             expect(res.statusCode).toEqual(404);
         });
     });
+
+    // it('')
+
+
+
+
+
 });
