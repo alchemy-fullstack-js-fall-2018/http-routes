@@ -2,6 +2,22 @@ const request = require('supertest');
 const app = require('../lib/app');
 
 describe('virtual zoo', () => {
+
+    it('gets an animal by id', () => {
+        return request(app).post('/animals')
+            .send({ name: 'Ramone', species: 'Penguin' })
+            .then(createRes => {
+                const { id } = JSON.parse(createRes.text);
+                return request(app).get(`/animals/${id}`);
+            })
+            .then(getRes => {
+                const animal = JSON.parse(getRes.text)
+                expect(animal.species).toEqual('Penguin');
+                expect(animal.name).toEqual('Ramone');
+                expect(animal.id).toEqual(expect.any(String));
+            });
+    });
+
     it('creates an animal', () => {
 
         return request(app).post('/animals')
