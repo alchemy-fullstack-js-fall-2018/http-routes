@@ -9,8 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "jest",
-    "start:watch": "jest --watch",
+    "start": "jest --watch",
     "lint": "eslint"
   },
   "repository": {
@@ -28,5 +27,8 @@
     "eslint": "^5.6.1",
     "jest": "^23.6.0",
     "supertest": "^3.3.0"
+  },
+  "dependencies": {
+    "shortid": "^2.2.13"
   }
 }
