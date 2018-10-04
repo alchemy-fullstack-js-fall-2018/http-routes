@@ -11,10 +11,10 @@ const app = require('../lib/app');
 
 describe('save', () => {
     it('saves a record', () => {
-        return request(app).post('/creatures')
+        return request(app).post('/creature')
             .send({ type: 'unicorn', isMagical: true })
             .then(resultOfPost => {
-                const { id } = JSON.parse(resultOfPost.text);
+                const { id } = JSON.parse(resultOfPost);
                 expect(id).toContain(expect.any(String));
             });
     });
