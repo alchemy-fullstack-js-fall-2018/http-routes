@@ -3,10 +3,12 @@ const app = require('../lib/app');
 const ToDoList = require('../lib/models/ToDoList');
 
 describe('to do', () => {
+    const toDos = [
+        { item: 'finish lab', due: '10/4' },
+        { item: 'reading', due: '10/4' }
+    ]
     
-    
-    let toDo1;
-    let toDo2;
+    let createdToDos;
 
     const creator = toDo => {
         return request(app).post('/toDoList')
@@ -18,25 +20,20 @@ describe('to do', () => {
     });
 
     beforeEach(() => {
-        return Promise.all([
-            { item: 'finish lab', due: '10/4' },
-            { item: 'reading', due: '10/4' }
-        ].map(creator))
+        return Promise.all(toDos.map(creator))
             .then(toDos => {
-                console.log('toDos', JSON.parse(toDos[0].text));
-                toDo1 = JSON.parse(toDos[0].text);
-                toDo2 = JSON.parse(toDos[1].text);
+                createdToDos = toDos.map(toDo => JSON.parse(toDo.text));
+                console.log('toDos', createdToDos);
             })
     });
 
     it('posts a to do', () => {
-        console.log('test', toDo1);
-        expect(toDo1.item).toEqual('finish lab');
-        expect(toDo1.due).toEqual('10/4');
-        expect(toDo1.id).toEqual(expect.any(String));
-        expect(toDo2.item).toEqual('reading');
-        expect(toDo2.due).toEqual('10/4');
-        expect(toDo2.id).toEqual(expect.any(String));
+        expect(createdToDos[0].item).toEqual('finish lab');
+        expect(createdToDos[0].due).toEqual('10/4');
+        expect(createdToDos[0].id).toEqual(expect.any(String));
+        expect(createdToDos[1].item).toEqual('reading');
+        expect(createdToDos[1].due).toEqual('10/4');
+        expect(createdToDos[1].id).toEqual(expect.any(String));
     });
 
     // it('gets all of the to dos', () => {
