@@ -73,4 +73,10 @@ describe('to do', () => {
             });
     });
 
+    it('returns 404 when there is no route', () => {
+        return request(app).get('/toEat').then(res => {
+            expect(res.statusCode).toEqual(404);
+        });
+    });
+
 });
