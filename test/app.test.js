@@ -30,7 +30,7 @@ describe('CRUD functions', () => {
         });
     });
 
-    it.skip('gets a record by id', () => {
+    it('gets a record by id', () => {
         return request(app).get(`/creatures/${savedCreatures[0].id}`)
             .then(result => {
                 const creature = JSON.parse(result.text);
@@ -38,8 +38,7 @@ describe('CRUD functions', () => {
             });
     });
 
-    it.skip('gets all records', () => {
-        console.log (JSON.stringify(savedCreatures, true, 2));
+    it('gets all records', () => {
         return request(app).get('/creatures')
             .then(results => {
                 const array = JSON.parse(results.text);
@@ -49,7 +48,6 @@ describe('CRUD functions', () => {
     });
 
     it('modifies an existing record', () => {
-        console.log (savedCreatures);
         const newData =  { 'type':'elephant', 'isMagical': false };
         const path = `/creatures/${savedCreatures[0].id}`;
         return request(app).put(path)
@@ -58,6 +56,18 @@ describe('CRUD functions', () => {
                 const modifiedCreature = JSON.parse(result.text);
                 expect(modifiedCreature.type).toEqual('elephant');
                 expect(modifiedCreature.isMagical).toBeFalsy;
+            });
+    });
+
+    it('deletes an existing record', () => {
+        const path = `/creatures/${savedCreatures[0].id}`;
+        return request(app).delete(path)
+            .then (() => {
+                return request(app).get('/creatures')
+                    .then(results => {
+                        const array = JSON.parse(results.text);
+                        expect(array).toEqual([savedCreatures[1], savedCreatures[2]]);
+                    });
             });
     });
 
