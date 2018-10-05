@@ -23,7 +23,6 @@ describe('to do', () => {
         return Promise.all(toDos.map(creator))
             .then(toDos => {
                 createdToDos = toDos.map(toDo => JSON.parse(toDo.text));
-                console.log('toDos', createdToDos);
             })
     });
 
@@ -40,6 +39,13 @@ describe('to do', () => {
         return request(app).get('/toDoList')
             .then(res => {
                 expect(JSON.parse(res.text)).toEqual(createdToDos);
+            })
+    });
+
+    it('gets toDos by id', () => {
+        return request(app).get(`/toDoList/${createdToDos[0].id}`)
+            .then(res => {
+                expect(JSON.parse(res.text)).toEqual(createdToDos[0]);
             })
     });
 
