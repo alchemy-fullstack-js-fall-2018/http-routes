@@ -42,10 +42,18 @@ describe('to do', () => {
             })
     });
 
-    it('gets toDos by id', () => {
+    it('gets toDo by id', () => {
         return request(app).get(`/toDoList/${createdToDos[0].id}`)
             .then(res => {
                 expect(JSON.parse(res.text)).toEqual(createdToDos[0]);
+            })
+    });
+
+    it('deletes toDo by id', () => {
+        return request(app).delete(`/toDoList/${createdToDos[0].id}`)
+            .then(request(app).get('/toDoList'))
+            .then(res => {
+                expect(JSON.parse(res.text)).toEqual(createdToDos[1]);
             })
     });
 
