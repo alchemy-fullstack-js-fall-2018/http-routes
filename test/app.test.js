@@ -65,4 +65,12 @@ describe('to do', () => {
             });
     })
 
+    it('returns 404 when there is no method', () => {
+        return request(app).patch('/toDoList')
+            .send({})
+            .then(res => {
+                expect(res.statusCode).toEqual(404);
+            });
+    });
+
 });
