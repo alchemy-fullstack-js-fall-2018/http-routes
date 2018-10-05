@@ -36,13 +36,11 @@ describe('to do', () => {
         expect(createdToDos[1].id).toEqual(expect.any(String));
     });
 
-    // it('gets all of the to dos', () => {
-    //     return request(app).get('/toDoList')
-    //         .send({ item: 'finish lab', due: '10/4' })
-    //         .send({ item: 'mongo db reading', due: '10/4' })
-    //         .then(res => {
-    //             expect(res.text).toEqual([{ item: 'finish lab', due: '10/4' }, { item: 'mongo db reading', due: '10/4' }]);
-    //         })
-    // });
+    it('gets all of the to dos', () => {
+        return request(app).get('/toDoList')
+            .then(res => {
+                expect(JSON.parse(res.text)).toEqual(createdToDos);
+            })
+    });
 
 });
