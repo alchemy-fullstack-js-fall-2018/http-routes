@@ -51,9 +51,10 @@ describe('to do', () => {
 
     it('deletes toDo by id', () => {
         return request(app).delete(`/toDoList/${createdToDos[0].id}`)
-            .then(request(app).get('/toDoList'))
+            .then(() => request(app).get('/toDoList'))
             .then(res => {
-                expect(JSON.parse(res.text)).toEqual(createdToDos[1]);
+                console.log('res', res.text);
+                expect(JSON.parse(res.text)).toEqual([createdToDos[1]]);
             })
     });
 
