@@ -53,9 +53,16 @@ describe('to do', () => {
         return request(app).delete(`/toDoList/${createdToDos[0].id}`)
             .then(() => request(app).get('/toDoList'))
             .then(res => {
-                console.log('res', res.text);
                 expect(JSON.parse(res.text)).toEqual([createdToDos[1]]);
             })
     });
+
+    it('updates a toDo', () => {
+        return request(app).put(`/toDoList/${createdToDos[0].id}`)
+            .send({ item: 'pair lab', due: '10/8' })
+            .then(res => {
+                expect(JSON.parse(res.text)).toEqual({ item: 'pair lab', due: '10/8' });
+            });
+    })
 
 });
