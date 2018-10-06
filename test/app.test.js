@@ -53,7 +53,7 @@ describe('to do', () => {
         return request(app).delete(`/toDoList/${createdToDos[0].id}`)
             .then(() => request(app).get('/toDoList'))
             .then(res => {
-                expect(res.body).toEqual([createdToDos[1]]);
+                expect(res.body).toEqual([createdToDos[1], ]);
             })
     });
 
