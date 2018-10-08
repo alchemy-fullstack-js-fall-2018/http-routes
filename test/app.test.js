@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../lib/app');
-
+// const Farm = require('../models/Farm');
 
 
 describe('pets that live on a farm', () => {
@@ -38,14 +38,6 @@ describe('pets that live on a farm', () => {
                 return request(app).post('/petsRoute')
                     .send(
                         { 
-                            name: 'ralph', 
-                            petType: 'lion' 
-                        }, 
-                        { 
-                            name: 'herb', 
-                            petType: 'hamster' 
-                        },
-                        { 
                             name: 'monty', 
                             petType: 'python' 
                         });
@@ -58,6 +50,43 @@ describe('pets that live on a farm', () => {
                 expect(array.length).toEqual(4);
             });
     });
+
+    it('updates a pet name', () => {
+        return request(app).post('/petsRoute')
+            .send({ name: 'porky', petType: 'little piglet' })
+            .then((res => {
+                const { id } = res.body;
+                return request(app).get(`/petsRoute'/${id}`);
+            })
+                .then(res => {
+                    const { id } = res.body;
+                    return request(app).put(`/petsRoute'/${id}`)
+                        .send({ id: id, petType: 'tamone' })
+                        .then(res => {
+                            const json = res.body;
+                            expect(json.name).toEqual('tamone');
+                            expect(json.species).toEqual('little piglet');
+                        });
+                }));
+    });       
+    
+
+    it('deletes an animal', () => {
+        return request(app).post('/petsRoute')
+            .send({ name: 'porky', petType: 'little piglet' })
+            .then(res => {
+                const { id } = JSON.parse(res.text);
+                return request(app).get(`/petsRoute/${id}`);
+            })
+            .then(res => {
+                const { id } = JSON.parse(res.text);
+                return request(app).delete(`/petsRoute/${id}`);
+            })
+            .then(res => {
+                const { removed } = JSON.parse(res.text);
+                expect(removed).toEqual(true);
+            });
+    });    
 
     it('returns 404 when there is no method', () => {
         return request(app)
@@ -74,10 +103,7 @@ describe('pets that live on a farm', () => {
         });
     });
 
-    // it('')
-
-
-
-
 
 });
+
+
