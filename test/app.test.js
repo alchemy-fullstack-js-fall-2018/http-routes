@@ -40,8 +40,10 @@ describe('rodent manager', () => {
     });
 
     it('updates a prop on a saved rodent', () => {
+        const id = rat.id;
+        rat.id = 'badID';
         rat.size = 'Large';
-        return request(app).put(`/rodents/${rat.id}`)
+        return request(app).put(`/rodents/${id}`)
             .send(rat)
             .then(res => {
                 const rodent = JSON.parse(res.text);
