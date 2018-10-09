@@ -74,8 +74,11 @@ describe('rodent manager', () => {
             });
     });
 
-    it.skip('deletes a rodent by id', () => {
-        return request(app).delete(`/rodents/${rat.id}`)
+    it('deletes a rodent by id', () => {
+        return request(app).delete(`/rodents/${createdRodents[1].id}`)
             .then(() => request(app).get('/rodents'))
+            .then(res => {
+                expect(res.body).toEqual([createdRodents[0]]);
+            });
     })
 });
