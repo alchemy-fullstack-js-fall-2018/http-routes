@@ -1,20 +1,35 @@
 const request = require('supertest');
 const app = require('../lib/app');
+const Rodents = require('../lib/models/Rodents');
 
 
 
 describe('rodent manager', () => {
     
-    let rat = { name: 'Rat', size: 'Small' };
+    const rodents = [
+        { name: 'Rat', size: 'Small' },
+        { name: 'Eurasian Beaver', size: 'Large' }
+    ];
 
-    beforeEach(()=> {
+    let createdRodents;
+
+    const creator = rodent => {
         return request(app).post('/rodents')
-            .send(rat)
-            .then(res => {
-                rat = JSON.parse(res.text);
+            .send(rodent);
+    };
+
+    beforeEach(() => {
+        return Rodents.drop();
+    });
+
+    beforeEach(() => {
+        return Promise.all(rodents.map(creator))
+            .then(rodents => {
+                createdRodents = rodents.map(rodent => JSON.parse(rodent.text));
             });
     });
-    
+
+
     it('creates a rodent', () => {
         return request(app).post('/rodents')
             .send({ name: 'Mouse', size: 'Small' })
@@ -39,7 +54,15 @@ describe('rodent manager', () => {
             });
     });
 
-    it('updates a prop on a saved rodent', () => {
+    it('gets ALL rodents', () => {
+        return request(app).get('/rodents')
+            .then(res => {
+                expect(res.body).toEqual(createdRodents);
+            });
+
+    })
+
+    it.skip('updates a prop on a saved rodent', () => {
         const id = rat.id;
         rat.id = 'badID';
         rat.size = 'Large';
@@ -50,4 +73,9 @@ describe('rodent manager', () => {
                 expect(rodent).toEqual(rat);                
             });
     });
+
+    it.skip('deletes a rodent by id', () => {
+        return request(app).delete(`/rodents/${rat.id}`)
+            .then(() => request(app).get('/rodents'))
+    })
 });
