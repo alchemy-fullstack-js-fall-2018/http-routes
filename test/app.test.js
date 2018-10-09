@@ -62,15 +62,11 @@ describe('rodent manager', () => {
 
     })
 
-    it.skip('updates a prop on a saved rodent', () => {
-        const id = rat.id;
-        rat.id = 'badID';
-        rat.size = 'Large';
-        return request(app).put(`/rodents/${id}`)
-            .send(rat)
+    it('updates a prop on a saved rodent', () => {
+        return request(app).put(`/rodents/${createdRodents[0].id}`)
+            .send({ name: 'Big Rat', size: 'Big' })
             .then(res => {
-                const rodent = JSON.parse(res.text);
-                expect(rodent).toEqual(rat);                
+                expect(res.body).toEqual({ name: 'Big Rat', size: 'Big' });
             });
     });
 
@@ -80,5 +76,5 @@ describe('rodent manager', () => {
             .then(res => {
                 expect(res.body).toEqual([createdRodents[0]]);
             });
-    })
+    });
 });
