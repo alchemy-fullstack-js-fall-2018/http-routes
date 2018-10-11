@@ -1,13 +1,13 @@
 const bodyParser = require('../lib/body-parser');
 const http = require('http');
-const EventEmitter = require('events');
+
 
 describe('body parser', () => {
     let request;
 
     beforeEach(() => {
         request = new http.ClientRequest();
-        request = new EventEmitter;
+  
         request.method = 'POST';
         request.setHeader('Content-Type', 'text/html');
     });
@@ -16,7 +16,7 @@ describe('body parser', () => {
         request.setHeader('Content-Type', 'text/html');
         request.headers = { 'content-type': 'text/html' };
         const promise = bodyParser(request).catch(err => {
-            expect(err).toEqual('Only supports JSON');
+            expect(err).toEqual('Nu ugh NOT TODAY..Only JSON allowed');
         });
          
         request.emit('data', '<html></html>');
