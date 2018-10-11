@@ -1,8 +1,10 @@
 const bodyParser = require('../lib/body-parser');
 const http = require('http');
 const EventEmitter = require('events');
+
 describe('body parser', () => {
     let request;
+
     beforeEach(() => {
         request = new http.ClientRequest();
         request = new EventEmitter;
