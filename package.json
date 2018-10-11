@@ -1,0 +1,38 @@
+{
+  "name": "http-routes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test:run": "jest",
+    "test": "npm run test:run",
+    "test:watch": "npm run test:run -- --watch",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alchemy-fullstack-js-fall-2018/http-routes.git"
+  },
+  "keywords": [],
+  "author": "davidhchhing@gmail.com (https://github.com/davidchhing)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alchemy-fullstack-js-fall-2018/http-routes/issues"
+  },
+  "homepage": "https://github.com/alchemy-fullstack-js-fall-2018/http-routes#readme",
+  "devDependencies": {
+    "eslint": "^5.6.1",
+    "jest": "^23.6.0",
+    "supertest": "^3.3.0"
+  },
+  "dependencies": {
+    "npm": "^6.4.1",
+    "uuid": "^3.3.2"
+  }
+}
