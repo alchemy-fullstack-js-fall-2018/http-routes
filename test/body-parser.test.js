@@ -1,38 +1,49 @@
+const { EventEmitter }  = require('events');
 const bodyParser = require('../lib/body-parser');
-const http = require('http');
 
+describe('bodyParser', () => {
+    it('parses json body', () => {
+        let req = new EventEmitter();
+        req.headers = {};
+        req.headers['content-type'] = 'application/json';
 
-describe('body parser', () => {
-    let request;
+        const promise = bodyParser(req)
+            .then(body => {
+                expect(body).toEqual({ name: 'test' });
+            });
 
-    beforeEach(() => {
-        request = new http.ClientRequest();
-  
-        request.method = 'POST';
-        request.setHeader('Content-Type', 'text/html');
-    });
-     
-    it('errors if content-type is not json', () => {
-        request.setHeader('Content-Type', 'text/html');
-        request.headers = { 'content-type': 'text/html' };
-        const promise = bodyParser(request).catch(err => {
-            expect(err).toEqual('Nu ugh NOT TODAY..Only JSON allowed');
-        });
-         
-        request.emit('data', '<html></html>');
-        request.emit('end');
-         
+        // emit after initializing body parser.
+        // body parser needs to subscribe to
+        // the events first.
+        req.emit('data', JSON.stringify({
+            name: 'test',
+        }));
+
+        req.emit('end');
+
         return promise;
     });
-     
-    it('parses a json request', () => {
-        request.setHeader('Content-Type', 'application/json');
-        request.headers = { 'content-type': 'application/json' };
-        const promise = bodyParser(request).then(body => {
-            expect(body).toEqual({ name: 'David' });
-        });
-        request.emit('data', '{ "name": "David" }');
-        request.emit('end');
+
+    it('fails gracefully if not json', () => {
+        let req = new EventEmitter();
+        req.headers = {};
+        req.headers['content-type'] = 'text/html';
+
+        const promise = bodyParser(req)
+            .then(() => {
+                expect(false);
+            })
+            .catch(err => {
+                expect(err).toBeTruthy();
+            });
+
+        // emit after initializing body parser.
+        // body parser needs to subscribe to
+        // the events first.
+        req.emit('data', '<html></html>');
+
+        req.emit('end');
+
         return promise;
     });
 });
