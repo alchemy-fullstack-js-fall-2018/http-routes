@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../lib/app');
-// const Farm = require('../models/Farm');
+// const farm = require('../models/Farm');
 
 
 describe('pets that live on a farm', () => {
