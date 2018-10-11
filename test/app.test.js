@@ -60,7 +60,7 @@ describe('rodent manager', () => {
                 expect(res.body).toEqual(createdRodents);
             });
 
-    })
+    });
 
     it('updates a prop on a saved rodent', () => {
         return request(app).put(`/rodents/${createdRodents[0].id}`)
