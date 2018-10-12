@@ -1,5 +1,31 @@
 const request = require('supertest');
 const app = require('../lib/app');
+const Tweets = require('../lib/models/Tweets');
+
+const myTweets = [
+    { username: 'me', text: 'hello this is my tweet' },
+    { username: 'you', text: 'howdy this is your tweet' }
+];
+
+let createdTweets;
+
+const creator = tweet => {
+    return request(app).post('/tweets')
+        .send(tweet);
+};
+
+beforeEach(() => {
+    return Tweets.drop();
+});
+
+beforeEach(() => {
+    return Promise.all(myTweets.map(creator))
+        .then(myTweets => {
+            createdTweets = myTweets.map(tweet => {
+                JSON.parse(tweet.text);
+            });
+        });
+});
 
 describe('twitter clone', () => {
     it('create a tweet', () => {
@@ -12,6 +38,7 @@ describe('twitter clone', () => {
                 expect(json.id).toEqual(expect.any(String));
             });
     });
+
     it('get a tweet by id', () => {
         return request(app).post('/tweets')
             .send({ username: 'me', text: 'my tweet' })
@@ -26,6 +53,17 @@ describe('twitter clone', () => {
                 expect(tweet.text).toEqual(expect.any(String));
             });
     });
+
+    it('updates to include new tweet', () => {
+        return request(app).put(`/tweets/${createdTweets[1].id}`)
+            .send({ username: 'me', text: 'hey! this is my new tweet' })
+            .then(res => {
+                expect(res.body).toEqual({ username: 'me', text: 'hey! this is my new tweet' });
+            });
+
+    });
+
+
 });
 
 
