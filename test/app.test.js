@@ -77,4 +77,22 @@ describe('rodent manager', () => {
                 expect(res.body).toEqual([createdRodents[0]]);
             });
     });
+
+    it('returns 404 when there is no method', () => {
+        return request(app)
+            .patch('/rodents')
+            .send({})
+            .then(res => {
+                expect(res.statusCode).toEqual(404);
+            });
+    });
+
+    it('returns 404 when there is no route', () => {
+        return request(app).get('/rabbits')
+            .then(res => {
+                expect(res.statusCode).toEqual(404);
+            });
+    });
+
+
 });
