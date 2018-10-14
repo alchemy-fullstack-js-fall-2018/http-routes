@@ -22,7 +22,7 @@ beforeEach(() => {
     return Promise.all(myTweets.map(creator))
         .then(myTweets => {
             createdTweets = myTweets.map(tweet => {
-                JSON.parse(tweet.text);
+                return JSON.parse(tweet.text);
             });
         });
 });
@@ -61,6 +61,21 @@ describe('twitter clone', () => {
                 expect(res.body).toEqual({ username: 'me', text: 'hey! this is my new tweet' });
             });
 
+    });
+
+    it('returns 404 when there is no method', () => {
+        return request(app)
+            .patch('/tweets')
+            .send({})
+            .then(res => {
+                expect(res.statusCode).toEqual(404);
+            });
+    });
+
+    it('returns 404 when there is no route', () => {
+        return request(app).get('/quarks').then(res => {
+            expect(res.statusCode).toEqual(404);
+        });
     });
 
 
