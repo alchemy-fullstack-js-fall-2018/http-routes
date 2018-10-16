@@ -63,22 +63,27 @@ describe('twitter clone', () => {
 
     });
 
-    it('returns 404 when there is no method', () => {
+    
+    it.skip('returns 404 when there is no method', () => {
         return request(app)
-            .patch('/tweets')
+            .put('/tweets')
             .send({})
             .then(res => {
                 expect(res.statusCode).toEqual(404);
             });
     });
-
-    it('returns 404 when there is no route', () => {
+    
+    it.skip('returns 404 when there is no route', () => {
         return request(app).get('/quarks').then(res => {
             expect(res.statusCode).toEqual(404);
         });
     });
-
-
+    
+    it('deletes a tweet by id', () => {
+        return request(app).delete(`/tweets/${createdTweets[1].id}`)
+            .then(() => request(app).get('/tweets'))
+            .then(res => {
+                expect(res.body).toEqual([createdTweets[0]]);
+            });
+    });  
 });
-
-
