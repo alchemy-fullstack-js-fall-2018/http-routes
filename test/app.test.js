@@ -64,16 +64,16 @@ describe('twitter clone', () => {
     });
 
     
-    it.skip('returns 404 when there is no method', () => {
+    it('returns 404 when there is no method', () => {
         return request(app)
-            .put('/tweets')
+            .patch('/tweets')
             .send({})
             .then(res => {
                 expect(res.statusCode).toEqual(404);
             });
     });
     
-    it.skip('returns 404 when there is no route', () => {
+    it('returns 404 when there is no route', () => {
         return request(app).get('/quarks').then(res => {
             expect(res.statusCode).toEqual(404);
         });
